@@ -29,7 +29,9 @@ public class Item {
 //    @Column(name = "is_rentable", nullable = false)
 //    private Boolean isRentable;
 
-    @Column
-    private Condition condition;
+    @Column(name = "condition")
+//    @Enumerated(EnumType.STRING)
+//    private Condition condition;
+    private String condition;
 
 }

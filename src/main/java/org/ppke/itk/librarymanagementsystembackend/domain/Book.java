@@ -8,13 +8,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@AllArgsConstructor()
 @NoArgsConstructor
 @Entity
+
+//TODO
+// Manuális konstruktor?
 public class Book {
 
 
@@ -23,20 +27,32 @@ public class Book {
     @Column(name = "id")
     private Integer id;
 
+    @Column(name = "title")
     private String title;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.EAGER)
     private Author author;
 
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "genre_id")
-    @Column
-    private Genre genre;
+    @Column(name = "genre")
+//    @Enumerated(EnumType.STRING)
+//    private Genre genre;
+    private String genre;
+
+
 
     @JsonManagedReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
     private List<Item> items;
+
+    @Column(name = "num_of_pages")
+    private Integer numberOfPages;
+
+    @Column(name = "publication_year")
+    private Integer publicationYear;
+
+    @Column(name = "first_publication_year")
+    private Integer firstPublicationYear;
 
     @Column(name = "cover")
     private String coverPath;

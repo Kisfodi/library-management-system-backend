@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Date;
 
 @Getter
@@ -28,12 +31,21 @@ public class Rent {
     @JoinColumn(name = "item_id")
     private Item itemRented;
 
-    private Date startDate;
+    @OneToOne(fetch = FetchType.EAGER, orphanRemoval = true)
+    @JoinColumn(name = "rent_date_id")
+    private RentDate rentDate;
 
-    private Date returnDate;
+/*    @Column(name = "start_date")
+    private LocalDateTime startDate;
 
-    private Date returnDateExtended;
+    @Column(name = "return_date")
+    private LocalDateTime returnDate;
 
+    @Column(name = "deadline")
+    private LocalDateTime deadline;
+    */
+
+    @Column(name = "num_of_extensions")
     private Integer numOfExtensions;
 
 

@@ -1,7 +1,5 @@
 package org.ppke.itk.librarymanagementsystembackend.domain;
 
-
-
 //TODO
 // Do make the domain for all classes
 
@@ -12,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +19,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "Author.deleteByName", query = "delete from Author a where a.name = :name")
+})
 public class Author {
 
     @Id
@@ -29,11 +31,24 @@ public class Author {
 
     private String name;
 
-    private Date birthDate;
+    @Column(name = "born_in", nullable = false)
+    private LocalDate dateOfBirth;
+
+    @Column(name = "died_in", nullable = true)
+    private LocalDate dateOfDeath;
 
     @JsonManagedReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
     private List<Book> books;
+
+    @Column
+    private String placeOfBirth;
+
+    @Column
+    private String placeOfDeath;
+
+    @Column(name = "portrait")
+    private String portraitPath;
 
 
 

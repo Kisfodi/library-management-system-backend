@@ -4,12 +4,16 @@ import org.ppke.itk.librarymanagementsystembackend.domain.Rent;
 
 public interface CustomRentRepository {
 
-    Rent createRent(Integer itemId, String username);
+    Rent saveRent(Integer itemId, String username);
 
-    void deleteRent(Integer rentId);
+    void deleteRent(Integer itemId, String username, Integer rentDateId);
+
+//    void deleteRent(Integer rentId);
 
 //    void deleteRent(Integer itemId, String username);
 
-    void updateRent(Integer itemId, String username, Rent rent);
+//    void deleteRent(Integer itemId, String username);
+
+//    void updateRent(Integer itemId, String username, Rent rent);
 
 }
