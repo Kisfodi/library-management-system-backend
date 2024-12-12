@@ -4,6 +4,7 @@ package org.ppke.itk.librarymanagementsystembackend.controller.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.ppke.itk.librarymanagementsystembackend.domain.Condition;
 import org.ppke.itk.librarymanagementsystembackend.domain.Rent;
 import org.ppke.itk.librarymanagementsystembackend.domain.RentDate;
 import org.ppke.itk.librarymanagementsystembackend.domain.User;
@@ -29,8 +30,8 @@ public class RentDto {
 
 //    private LocalDateTime startDate;
 //    private LocalDateTime returnDate;
-    private String condition;
-    private boolean itemRented;
+    private Condition condition;
+//    private boolean itemRented;
 
 
     public static RentDto fromRent(Rent rent) {
@@ -41,8 +42,8 @@ public class RentDto {
                 rent.getItemRented().getBook().getAuthor().getName(),
                 rent.getUserOfRent().getUsername(),
                 rent.getRentDate(),
-                rent.getItemRented().getCondition(),
-                rent.getItemRented().getIsAvailable()
+                rent.getItemRented().getCondition()
+//                rent.getItemRented().getIsAvailable()
         );
     }
 

@@ -17,6 +17,20 @@ public class LibraryManagementSystemConfiguration {
         return new Jackson2ObjectMapperBuilder().dateFormat(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"));
     }
 
+    @Bean
+    public OpenAPI customOpenAPI() {
+        return new OpenAPI()
+                .info(
+                        new Info()
+                                .title("Library Management System")
+                                .version("0.0.1-SNAPSHOT")
+                                .description("Library Management System")
+                                .termsOfService("http://swagger.io/terms/")
+                                .license(new License().name("Apache 2.0").url("http://springdoc.org"))
+
+                );
+    }
+
 
 
 }

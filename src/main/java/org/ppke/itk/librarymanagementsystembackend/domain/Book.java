@@ -7,13 +7,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.ppke.itk.librarymanagementsystembackend.converters.GenreConverter;
 
 import java.util.Date;
 import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor()
+//@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 
@@ -35,11 +36,8 @@ public class Book {
     private Author author;
 
     @Column(name = "genre")
-//    @Enumerated(EnumType.STRING)
-//    private Genre genre;
-    private String genre;
-
-
+//    @Convert(converter = GenreConverter.class)
+    private Genre genre;
 
     @JsonManagedReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
@@ -56,5 +54,41 @@ public class Book {
 
     @Column(name = "cover")
     private String coverPath;
+
+/*    public Book(
+                Integer id,
+                String title,
+                Author author,
+                String genre,
+                List<Item> items,
+                Integer numberOfPages,
+                Integer publicationYear,
+                Integer firstPublicationYear,
+                String coverPath) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.items = items;
+        this.genre = Genre.fromString(genre);
+        this.numberOfPages = numberOfPages;
+        this.publicationYear = publicationYear;
+        this.firstPublicationYear = firstPublicationYear;
+        this.coverPath = coverPath;
+    }*/
+
+/*    public Book(
+            Integer id,
+            String title,
+            Author author,
+            Genre genre,
+            List<Item> items,
+            Integer numberOfPages,
+            Integer publicationYear,
+            Integer firstPublicationYear,
+            String coverPath) {
+
+        this(id, title, author, genre.getGenreName(), items, numberOfPages, publicationYear, firstPublicationYear, coverPath);
+
+    }*/
 
 }

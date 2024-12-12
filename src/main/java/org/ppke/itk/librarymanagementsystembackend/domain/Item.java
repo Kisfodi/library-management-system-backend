@@ -31,7 +31,7 @@ public class Item {
 
     @Column(name = "condition")
 //    @Enumerated(EnumType.STRING)
-//    private Condition condition;
-    private String condition;
+    private Condition condition;
+//    private String condition;
 
 }

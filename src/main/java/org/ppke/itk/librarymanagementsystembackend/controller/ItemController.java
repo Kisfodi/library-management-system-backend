@@ -1,5 +1,6 @@
 package org.ppke.itk.librarymanagementsystembackend.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.ppke.itk.librarymanagementsystembackend.controller.dto.ItemDto;
@@ -19,15 +20,12 @@ import java.util.stream.Collectors;
 
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
+@Tag(name = "Item")
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/items")
 public class ItemController {
-
-    /*
-
-
 
     private final ItemRepository itemRepository;
 
@@ -84,5 +82,4 @@ public class ItemController {
         return null;
     }
 
-     */
 }

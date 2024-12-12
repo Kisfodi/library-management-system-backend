@@ -26,8 +26,8 @@ public interface BookRepository extends JpaRepository<Book, Integer>, JpaSpecifi
     @Query("select b from Book b where upper(b.author.name) like upper(concat('%', ?1, '%')) order by b.id")
     Page<Book> findByAuthor_NameContainsIgnoreCaseOrderByIdAsc(String name, Pageable pageable);
 
-    @Query("select b from Book b where upper(b.genre) like upper(concat('%', ?1, '%')) order by b.id")
-    Page<Book> findByGenreContainsIgnoreCaseOrderByIdAsc(String genre, Pageable pageable);
+//    @Query("select b from Book b where upper(b.genre) like upper(concat('%', ?1, '%')) order by b.id")
+//    Page<Book> findByGenreContainsIgnoreCaseOrderByIdAsc(String genre, Pageable pageable);
 
     Page<Book> findAll(Specification<Book> specification, Pageable pageable);
 

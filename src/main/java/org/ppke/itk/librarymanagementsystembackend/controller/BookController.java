@@ -1,6 +1,7 @@
 package org.ppke.itk.librarymanagementsystembackend.controller;
 
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.ppke.itk.librarymanagementsystembackend.controller.dto.BookDto;
@@ -18,16 +19,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
+@Tag(name = "Book")
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/books")
 public class BookController {
 
-    /*
-
     private final BookRepository bookRepository;
-//    private final Book
 
 
 
@@ -36,6 +35,11 @@ public class BookController {
 //    Összetett filter
     @GetMapping("/{id}")
     public BookDto getBookById(@PathVariable("id") Integer id) {
+
+//        Optional<Book> book = bookRepository.findById(id);
+
+//        log.info(String.valueOf(book.get().getGenre()));
+
         return BookDto.fromBook(bookRepository.findById(id).orElseThrow());
     }
 
@@ -168,7 +172,5 @@ public class BookController {
         return in.readAllBytes();
 
     }
-
-     */
 
 }

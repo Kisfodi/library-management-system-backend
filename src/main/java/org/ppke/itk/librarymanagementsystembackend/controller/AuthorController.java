@@ -1,7 +1,9 @@
 package org.ppke.itk.librarymanagementsystembackend.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.ppke.itk.librarymanagementsystembackend.controller.dto.AuthorDto;
@@ -19,26 +21,30 @@ import java.io.InputStream;
 import java.nio.file.NoSuchFileException;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
+@Tag(name = "Author")
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/authors")
 public class AuthorController {
 
-
     private final AuthorRepository authorRepository;
 
-    /*
-
-
-     */
+    @Operation(summary = "Retrieve author given by id")
     @GetMapping(value = "/{id}")
     public AuthorDto getAuthorById(@PathVariable("id") Integer id) {
-        return AuthorDto.fromAuthor(authorRepository.findById(id).get());
+
+        Optional<Author> author = authorRepository.findById(id);
+
+        if (author.isPresent()) {
+            return AuthorDto.fromAuthor(author.get());
+        } else throw new NoSuchElementException("Author not found");
+
     }
 
-    /*
+    @Operation(summary = "Retrieve list of authors")
     @GetMapping("")
     public List<AuthorDto> getAuthors() {
 
@@ -48,9 +54,8 @@ public class AuthorController {
 
     }
 
-
-
     @GetMapping(value = "/{id}", produces = "image/png")
+    @Operation(summary = "Return portrait of the author given by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Get portrait of given author"),
             @ApiResponse(responseCode = "404", description = "Image path is not found")
@@ -82,7 +87,7 @@ public class AuthorController {
 
     }
 
-
+    /*
      */
 
 }

@@ -9,13 +9,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -32,9 +32,31 @@ public class WebSecurityConfiguration {
     private final UserDetailsService userDetailsService;
 
     @Bean
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+
+        httpSecurity.csrf(AbstractHttpConfigurer::disable);
+        httpSecurity.authorizeHttpRequests(auth -> auth
+                        .requestMatchers(antMatcher(HttpMethod.DELETE)).hasRole("ADMIN")
+                        .requestMatchers(antMatcher("/books/**")).hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(antMatcher("/items/**")).hasRole("ADMIN")
+                        .anyRequest().authenticated()
+                )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .httpBasic(Customizer.withDefaults());
+
+        return httpSecurity.build();
+    }
+
+    @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+/*        @Bean
+    public PasswordEncoder passwordEncoder() {
+        return NoOpPasswordEncoder.getInstance();
+
+    }*/
 
     @Bean
     public AuthenticationManager autManager(HttpSecurity http) throws Exception {
@@ -47,20 +69,21 @@ public class WebSecurityConfiguration {
         return authenticationManagerBuilder.build();
     }
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+/*    @Bean
+    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
+        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
 
-        httpSecurity.csrf(AbstractHttpConfigurer::disable);
-        httpSecurity.authorizeHttpRequests(auth -> auth
-                .requestMatchers(antMatcher(HttpMethod.DELETE)).hasRole("ADMIN")
-                .requestMatchers(antMatcher("/books/**")).hasAnyRole("ADMIN", "USER")
-                .requestMatchers(antMatcher("/items/**")).hasRole("ADMIN")
-                .anyRequest().authenticated()
-        )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .httpBasic(Customizer.withDefaults());
+        authenticationManagerBuilder.inMemoryAuthentication()
+                .withUser("user")
+                .password(passwordEncoder().encode("user"))
+                .roles("USER")
+                .and()
+                .withUser("admin")
+                .password(passwordEncoder().encode("admin"))
+                .roles("ADMIN", "USER");
 
-        return httpSecurity.build();
-    }
+        return authenticationManagerBuilder.build();
+    }*/
+
 
 }
