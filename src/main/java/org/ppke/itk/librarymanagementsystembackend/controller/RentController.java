@@ -5,14 +5,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.ppke.itk.librarymanagementsystembackend.controller.dto.RentDto;
 import org.ppke.itk.librarymanagementsystembackend.domain.Rent;
-import org.ppke.itk.librarymanagementsystembackend.repository.CustomRentRepository;
-import org.ppke.itk.librarymanagementsystembackend.repository.RentRepository;
+import org.ppke.itk.librarymanagementsystembackend.repository.interfaces.CustomRentRepository;
+import org.ppke.itk.librarymanagementsystembackend.repository.interfaces.RentRepository;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLException;
 import java.util.List;
 
 @Tag(name = "Rent")

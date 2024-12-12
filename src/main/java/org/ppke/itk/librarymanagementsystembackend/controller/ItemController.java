@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.ppke.itk.librarymanagementsystembackend.controller.dto.ItemDto;
 import org.ppke.itk.librarymanagementsystembackend.domain.Item;
-import org.ppke.itk.librarymanagementsystembackend.repository.ItemRepository;
+import org.ppke.itk.librarymanagementsystembackend.repository.interfaces.ItemRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -15,10 +15,6 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 @Tag(name = "Item")
 @Slf4j

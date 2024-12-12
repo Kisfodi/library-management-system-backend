@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.ppke.itk.librarymanagementsystembackend.controller.dto.BookDto;
 import org.ppke.itk.librarymanagementsystembackend.domain.Book;
-import org.ppke.itk.librarymanagementsystembackend.repository.BookRepository;
+import org.ppke.itk.librarymanagementsystembackend.repository.interfaces.BookRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;

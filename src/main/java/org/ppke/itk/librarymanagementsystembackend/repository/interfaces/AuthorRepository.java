@@ -1,9 +1,7 @@
-package org.ppke.itk.librarymanagementsystembackend.repository;
+package org.ppke.itk.librarymanagementsystembackend.repository.interfaces;
 
 import org.ppke.itk.librarymanagementsystembackend.domain.Author;
-import org.ppke.itk.librarymanagementsystembackend.domain.Book;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

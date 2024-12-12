@@ -1,4 +1,4 @@
-package org.ppke.itk.librarymanagementsystembackend.repository;
+package org.ppke.itk.librarymanagementsystembackend.repository.interfaces;
 
 import org.ppke.itk.librarymanagementsystembackend.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;

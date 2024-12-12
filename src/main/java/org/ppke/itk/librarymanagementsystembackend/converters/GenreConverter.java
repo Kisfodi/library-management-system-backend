@@ -4,8 +4,6 @@ import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 import org.ppke.itk.librarymanagementsystembackend.domain.Genre;
 
-import java.util.stream.Stream;
-
 @Converter(autoApply = true)
 public class GenreConverter implements AttributeConverter<Genre, String> {
 

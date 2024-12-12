@@ -3,7 +3,7 @@ package org.ppke.itk.librarymanagementsystembackend.security;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.ppke.itk.librarymanagementsystembackend.domain.User;
-import org.ppke.itk.librarymanagementsystembackend.repository.UserRepository;
+import org.ppke.itk.librarymanagementsystembackend.repository.interfaces.UserRepository;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

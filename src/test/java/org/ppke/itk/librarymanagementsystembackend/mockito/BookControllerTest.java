@@ -5,8 +5,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.ppke.itk.librarymanagementsystembackend.controller.BookController;
-import org.ppke.itk.librarymanagementsystembackend.domain.Book;
-import org.ppke.itk.librarymanagementsystembackend.repository.BookRepository;
+import org.ppke.itk.librarymanagementsystembackend.repository.interfaces.BookRepository;
 
 @ExtendWith(MockitoExtension.class)
 public class BookControllerTest {

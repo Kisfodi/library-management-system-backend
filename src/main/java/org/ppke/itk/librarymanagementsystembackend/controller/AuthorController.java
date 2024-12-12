@@ -8,17 +8,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.ppke.itk.librarymanagementsystembackend.controller.dto.AuthorDto;
 import org.ppke.itk.librarymanagementsystembackend.domain.Author;
-import org.ppke.itk.librarymanagementsystembackend.domain.Genre;
-import org.ppke.itk.librarymanagementsystembackend.repository.AuthorRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.ppke.itk.librarymanagementsystembackend.repository.interfaces.AuthorRepository;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.NoSuchFileException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;

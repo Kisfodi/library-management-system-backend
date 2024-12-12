@@ -16,8 +16,6 @@ public class AuthorDto {
     private String name;
     private LocalDate dateOfBirth;
     private LocalDate dateOfDeath;
-//    private String placeOfBirth;
-//    private String placeOfDeath;
 
     public static AuthorDto fromAuthor(Author author) {
         return new AuthorDto(

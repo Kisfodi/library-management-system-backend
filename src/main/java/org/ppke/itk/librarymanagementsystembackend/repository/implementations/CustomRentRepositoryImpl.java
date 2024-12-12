@@ -1,21 +1,21 @@
-package org.ppke.itk.librarymanagementsystembackend.repository;
+package org.ppke.itk.librarymanagementsystembackend.repository.implementations;
 
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.ppke.itk.librarymanagementsystembackend.domain.Item;
 import org.ppke.itk.librarymanagementsystembackend.domain.Rent;
 import org.ppke.itk.librarymanagementsystembackend.domain.RentDate;
 import org.ppke.itk.librarymanagementsystembackend.domain.User;
-import org.springframework.data.jpa.repository.Modifying;
+import org.ppke.itk.librarymanagementsystembackend.repository.interfaces.CustomRentRepository;
+import org.ppke.itk.librarymanagementsystembackend.repository.interfaces.ItemRepository;
+import org.ppke.itk.librarymanagementsystembackend.repository.interfaces.RentRepository;
+import org.ppke.itk.librarymanagementsystembackend.repository.interfaces.UserRepository;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import java.util.*;
 
 @Repository
@@ -50,16 +50,6 @@ public class CustomRentRepositoryImpl implements CustomRentRepository {
         List<Rent> existingRent = rentRepository.findNotReturnedRent(itemId);
         if (!existingRent.isEmpty()) {
             throw new IllegalStateException("Item is already rented!");
-            /*
-            rent = existingRent.get();
-            rent.setReturnDate(LocalDateTime.now());
-
-            itemRepository.updateAvailability(true, item.get().getId());
-            itemRepository.saveAndFlush(item.get());
-            rentRepository.saveAndFlush(rent);
-            */
-
-
         } else {
             rent = new Rent();
             rent.setUserOfRent(user.get());
@@ -74,15 +64,9 @@ public class CustomRentRepositoryImpl implements CustomRentRepository {
             itemRepository.updateAvailability(false, item.get().getId());
             rent.setRentDate(entityManager.merge(rentDate));
 
-//            itemRepository.saveAndFlush(item.get());
-            //            item.get().setIsAvailable(entityManager.merge(false));
-
             entityManager.persist(rent);
 
         }
-        /*
-
-         */
 
         return rent;
     }
@@ -103,9 +87,6 @@ public class CustomRentRepositoryImpl implements CustomRentRepository {
 
         else
             throw new NoSuchElementException("No such rent found!");
-
-//        rent?.ifPresent(value -> entityManager.remove(value));
-
     }
 
     @Override
@@ -164,10 +145,7 @@ public class CustomRentRepositoryImpl implements CustomRentRepository {
         Optional<Rent> existingRent = rentRepository.findNotReturnedByUserRent(username, itemId);
 
         if (existingRent.isPresent()) {
-//            Item itemOfRent = existingRent.get().getItemRented();
-//            itemRepository.updateAvailability(true, itemOfRent.getId());
-//            existingRent.get().setItemRented(entityManager.merge(itemOfRent));
-
+            
             RentDate rentDate = existingRent.get().getRentDate();
             rentDate.setDeadline(rentDate.getDeadline().plusWeeks(1));
             existingRent.get().setRentDate(entityManager.merge(rentDate));

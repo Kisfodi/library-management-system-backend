@@ -18,11 +18,9 @@ public class RentDto {
     private Integer itemRentedId;
     private String bookTitle;
     private String bookAuthorName;
-
     private String userName;
     private RentDate rentDate;
     private Integer numberOfExtensions;
-
     private Condition condition;
 //    private boolean isAvailable;
 
