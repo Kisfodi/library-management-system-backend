@@ -44,9 +44,17 @@ public class BookController {
         return BookDto.fromBook(bookRepository.findById(id).orElseThrow());
     }
 
-/*    @Operation(summary = """
-            Retrieves a list of books based on several different parameters
-            """)*/
+    @Operation(summary = "Retrieves a list of books based on several different parameters",
+            description = """
+             This request allows for a slightly more advanced filtering and sorting.
+                            1. Sorting
+                                - 'sortKeyword': defines the column based on which we would like to sort
+                                - 'sort': defines if sorting is done in an ascending (asc) or descending (desc) order
+                            2. Filtering is done with the following 3 parameters
+                                - 'filterKeyword': list of strings which contains the attributes we want to use for filtering
+                                - 'filterValue': list of Strings that contains the values of the different filter
+                                - 'filterOperator': list of Strings that define the logic of the search
+            """ )
     @GetMapping("")
     public List<BookDto> getBooks(
             @RequestParam(required = false, defaultValue = "100") Integer limit,
