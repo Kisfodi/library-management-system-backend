@@ -7,10 +7,6 @@ import lombok.NoArgsConstructor;
 import org.ppke.itk.librarymanagementsystembackend.domain.Condition;
 import org.ppke.itk.librarymanagementsystembackend.domain.Rent;
 import org.ppke.itk.librarymanagementsystembackend.domain.RentDate;
-import org.ppke.itk.librarymanagementsystembackend.domain.User;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -23,15 +19,12 @@ public class RentDto {
     private String bookTitle;
     private String bookAuthorName;
 
-//    private User user;
-
     private String userName;
     private RentDate rentDate;
+    private Integer numberOfExtensions;
 
-//    private LocalDateTime startDate;
-//    private LocalDateTime returnDate;
     private Condition condition;
-//    private boolean itemRented;
+//    private boolean isAvailable;
 
 
     public static RentDto fromRent(Rent rent) {
@@ -42,6 +35,7 @@ public class RentDto {
                 rent.getItemRented().getBook().getAuthor().getName(),
                 rent.getUserOfRent().getUsername(),
                 rent.getRentDate(),
+                rent.getNumOfExtensions(),
                 rent.getItemRented().getCondition()
 //                rent.getItemRented().getIsAvailable()
         );
