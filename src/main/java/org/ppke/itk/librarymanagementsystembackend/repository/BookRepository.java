@@ -1,6 +1,7 @@
 package org.ppke.itk.librarymanagementsystembackend.repository;
 
 import org.ppke.itk.librarymanagementsystembackend.domain.Book;
+import org.ppke.itk.librarymanagementsystembackend.domain.Genre;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -34,8 +35,6 @@ public interface BookRepository extends JpaRepository<Book, Integer>, JpaSpecifi
     @Query("select b from Book b where upper(b.author.name) = upper(:name)")
     List<Book> findByAuthor_NameIgnoreCase(@Param("name") String name);
 
-    Page<Book> findAll(Pageable pageable);
-
     Optional<Book> findById(Integer id);
 
 
@@ -55,7 +54,9 @@ public interface BookRepository extends JpaRepository<Book, Integer>, JpaSpecifi
 
     static Specification<Book> containsKeywordInGenre(String keyword) {
         return (root, query, criteriaBuilder)
-                -> criteriaBuilder.like(criteriaBuilder.upper(root.get("genre")), "%" + keyword.toUpperCase() + "%");
+//                -> criteriaBuilder.like(criteriaBuilder.upper(root.get("genre")), "%" + keyword.toUpperCase() + "%");
+                -> criteriaBuilder.equal(criteriaBuilder.lower(criteriaBuilder.toString(root.get("genre"))), keyword.toLowerCase());
+
     }
 
     static Specification<Book> containsKeywordInYear(String keyword) {

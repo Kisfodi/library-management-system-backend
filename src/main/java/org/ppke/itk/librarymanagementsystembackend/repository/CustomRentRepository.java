@@ -6,11 +6,13 @@ public interface CustomRentRepository {
 
     Rent saveRent(Integer itemId, String username);
 
-    void deleteRent(Integer itemId, String username, Integer rentDateId);
+    void deleteRent(Integer itemId, String username);
 
-//    void deleteRent(Integer rentId);
+    void returnRent(Integer itemId, String username);
 
-//    void deleteRent(Integer itemId, String username);
+    void extendDeadline(Integer itemId, String username);
+
+//    public Rent updateRent
 
 //    void deleteRent(Integer itemId, String username);
 

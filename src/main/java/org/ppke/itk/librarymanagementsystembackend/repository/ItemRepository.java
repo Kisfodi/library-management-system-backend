@@ -42,17 +42,18 @@ public interface ItemRepository extends JpaRepository<Item, Integer>, JpaSpecifi
 
     static Specification<Item> containsKeywordInTitle(String keyword) {
         return (root, query, criteriaBuilder) ->
-                criteriaBuilder.like(criteriaBuilder.upper(root.get("book").get("title")), "%" + keyword.toUpperCase() + "%");
+                criteriaBuilder.like(criteriaBuilder.lower(root.get("book").get("title")), "%" + keyword.toLowerCase() + "%");
     }
 
     static Specification<Item> checkAvailability(String isAvailable) {
         return (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("isAvailable"), Boolean.parseBoolean(isAvailable));
+        criteriaBuilder.equal(root.get("isAvailable"), Boolean.parseBoolean(isAvailable));
+
     }
 
     static Specification<Item> checkCondition(String condition) {
         return (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("condition"), condition);
+                criteriaBuilder.equal(criteriaBuilder.lower(criteriaBuilder.toString(root.get("condition"))), condition.toLowerCase());
     }
 
 }
