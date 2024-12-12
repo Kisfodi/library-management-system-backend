@@ -50,14 +50,8 @@ public class BookController {
             @RequestParam(required = false, defaultValue = "id") String sortKeyWord,
             @RequestParam(required = false) List<String> filterKeyword,
             @RequestParam(required = false) List<String> filterValue,
-            @RequestParam(required = false) List<String> filterOperator,
-            @RequestParam(required = false) String title
+            @RequestParam(required = false) List<String> filterOperator
             ) {
-//
-
-//        Map<String, Function<String, Specification<Book>>> specificationMap = new HashMap<>();
-//        specificationMap.put("title", BookRepository::containsKeywordInTitle);
-
 
         if (filterKeyword != null && filterValue != null && filterOperator != null) {
 
@@ -79,7 +73,6 @@ public class BookController {
             Assert.state(filterKeyword.size() == filterValue.size(), "There should be key-value pairs after each other!");
             Assert.state(filterKeyword.size() < 2, "There should be only one pair if there are no operators!");
         } else {
-//            log.info(String.valueOf(limit));
             filterKeyword = Collections.emptyList();
             filterValue = Collections.emptyList();
             filterOperator = Collections.emptyList();

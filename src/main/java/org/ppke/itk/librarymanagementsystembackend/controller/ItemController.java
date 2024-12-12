@@ -52,15 +52,20 @@ public class ItemController {
         Specification<Item> specification = Specification.where(null);
 
         if (bookTitle != null) {
-            specification.and(ItemRepository.containsKeywordInTitle(bookTitle));
+            log.info("Title: {}", bookTitle);
+            specification = specification.and(ItemRepository.containsKeywordInTitle(bookTitle));
         }
 
+        log.info(condition);
         if (condition != null) {
-            specification.and(ItemRepository.checkCondition(condition));
+            log.info("Condition: {}", condition);
+            specification = specification.and(ItemRepository.checkCondition(condition));
         }
 
         if (isAvailable != null) {
-            specification.and(ItemRepository.checkAvailability(isAvailable));
+            log.info("Available: {}", isAvailable);
+            log.info("IsAvailable: {}", Boolean.parseBoolean(isAvailable));
+            specification = specification.and(ItemRepository.checkAvailability(isAvailable));
         }
 
         var sortParam = sort.equalsIgnoreCase("asc") ?
@@ -69,17 +74,35 @@ public class ItemController {
 
         Page<Item> items = itemRepository.findAll(specification, PageRequest.of(0, limit, sortParam));
 
+
         return items.stream().
-                map(ItemDto::fromItem).collect(Collectors.
-                        toList());
+                map(ItemDto::fromItem).toList();
 
     }
 
-   @PutMapping("/{id}/available")
-    ResponseEntity<Item> updateItemToAvailable(@PathVariable("id") Integer id) {
+    @Secured("ROLE_ADMIN")
+    @PutMapping("/{id}/available")
+    ResponseEntity<String> updateItemToAvailable(@PathVariable("id") Integer id) {
 //        Optional<Item> itemToUpdate = itemRepository.findById(id);
-        itemRepository.updateAvailability(true, id);
-        return null;
+
+        try {
+            itemRepository.updateAvailability(true, id);
+            return ResponseEntity.ok("Item updated successfully");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @Secured("ROLE_ADMIN")
+    @PutMapping("/{id}/notAvailable")
+    ResponseEntity<String> updateItemToNotAvailable(@PathVariable("id") Integer id) {
+
+        try {
+            itemRepository.updateAvailability(false, id);
+            return ResponseEntity.ok("Item updated successfully");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
 }
