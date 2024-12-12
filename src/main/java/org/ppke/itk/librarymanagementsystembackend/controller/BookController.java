@@ -1,6 +1,7 @@
 package org.ppke.itk.librarymanagementsystembackend.controller;
 
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,9 +44,13 @@ public class BookController {
         return BookDto.fromBook(bookRepository.findById(id).orElseThrow());
     }
 
+/*    @Operation(summary = """
+            Retrieves a list of books based on several different parameters
+            """)*/
     @GetMapping("")
     public List<BookDto> getBooks(
             @RequestParam(required = false, defaultValue = "100") Integer limit,
+            @RequestParam(required = false, defaultValue = "0") Integer currentPageNumber,
             @RequestParam(required = false, defaultValue = "asc") String sort,
             @RequestParam(required = false, defaultValue = "id") String sortKeyWord,
             @RequestParam(required = false) List<String> filterKeyword,
@@ -123,7 +128,7 @@ public class BookController {
                 Sort.by(Sort.Direction.DESC, sortKeyWord);
 
 
-        Page<Book> books = bookRepository.findAll(specification, PageRequest.of(0, limit, sortParam));
+        Page<Book> books = bookRepository.findAll(specification, PageRequest.of(currentPageNumber, limit, sortParam));
 
         log.info("Size of result: {}", books.getSize());
 

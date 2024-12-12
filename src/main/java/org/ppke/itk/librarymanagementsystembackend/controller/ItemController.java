@@ -35,6 +35,7 @@ public class ItemController {
     @GetMapping("")
     public List<ItemDto> getItems(
             @RequestParam(required = false, defaultValue = "100") Integer limit,
+            @RequestParam(required = false, defaultValue = "0") Integer currentPageNumber,
             @RequestParam(required = false, defaultValue = "asc") String sort,
             @RequestParam(required = false) String bookTitle,
             @RequestParam(required = false) String condition,
@@ -68,7 +69,7 @@ public class ItemController {
                 Sort.by(Sort.Direction.ASC, "book.title", "id") :
                 Sort.by(Sort.Direction.DESC, "book.title", "id");
 
-        Page<Item> items = itemRepository.findAll(specification, PageRequest.of(0, limit, sortParam));
+        Page<Item> items = itemRepository.findAll(specification, PageRequest.of(currentPageNumber, limit, sortParam));
 
 
         return items.stream().
