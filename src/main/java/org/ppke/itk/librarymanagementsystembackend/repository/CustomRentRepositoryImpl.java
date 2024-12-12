@@ -10,6 +10,7 @@ import org.ppke.itk.librarymanagementsystembackend.domain.Item;
 import org.ppke.itk.librarymanagementsystembackend.domain.Rent;
 import org.ppke.itk.librarymanagementsystembackend.domain.RentDate;
 import org.ppke.itk.librarymanagementsystembackend.domain.User;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -36,6 +37,8 @@ public class CustomRentRepositoryImpl implements CustomRentRepository {
         Optional<Item> item = itemRepository.findById(itemId);
         if (item.isEmpty()) {
             throw new NoSuchElementException("No item found with id " + itemId);
+        } else if (!item.get().getIsAvailable()) {
+            throw new IllegalStateException("Item is not available!");
         }
 
         Optional<User> user = userRepository.findByUsername(username);
@@ -44,8 +47,8 @@ public class CustomRentRepositoryImpl implements CustomRentRepository {
             throw new NoSuchElementException("No user found with name " + username);
         }
 
-        Optional<Rent> existingRent = rentRepository.findNotReturnedRent(username, itemId);
-        if (existingRent.isPresent()) {
+        List<Rent> existingRent = rentRepository.findNotReturnedRent(itemId);
+        if (!existingRent.isEmpty()) {
             throw new IllegalStateException("Item is already rented!");
             /*
             rent = existingRent.get();
@@ -86,9 +89,94 @@ public class CustomRentRepositoryImpl implements CustomRentRepository {
 
     @Override
     @Transactional
-    public void deleteRent(Integer itemId, String username, Integer rentDateId) {
-        Optional<Rent> rent = rentRepository.findRent(username, itemId, rentDateId);
-        rent.ifPresent(value -> entityManager.remove(value));
+    public void deleteRent(Integer itemId, String username) {
+        Optional<Rent> rent = rentRepository.findNotReturnedByUserRent(username, itemId);
 
+        if (rent.isPresent()) {
+
+            Item item = rent.get().getItemRented();
+            itemRepository.updateAvailability(true, item.getId());
+            rent.get().setItemRented(entityManager.merge(item));
+            entityManager.remove(rent.get());
+
+        }
+
+        else
+            throw new NoSuchElementException("No such rent found!");
+
+//        rent?.ifPresent(value -> entityManager.remove(value));
+
+    }
+
+    @Override
+    @Transactional
+    public void returnRent(Integer itemId, String username) {
+
+        Optional<Item> item = itemRepository.findById(itemId);
+        if (item.isEmpty()) {
+            throw new NoSuchElementException("No item found with id " + itemId);
+        } else if (item.get().getIsAvailable()) {
+            throw new IllegalStateException("Item is not rented by anyone!");
+        }
+
+        Optional<User> user = userRepository.findByUsername(username);
+
+        if (user.isEmpty()) {
+            throw new NoSuchElementException("No user found with name " + username);
+        }
+
+        Optional<Rent> existingRent = rentRepository.findNotReturnedByUserRent(username, itemId);
+
+        if (existingRent.isPresent()) {
+            Item itemOfRent = existingRent.get().getItemRented();
+            itemRepository.updateAvailability(true, itemOfRent.getId());
+            existingRent.get().setItemRented(entityManager.merge(itemOfRent));
+
+            RentDate rentDate = existingRent.get().getRentDate();
+            rentDate.setReturnDate(LocalDateTime.now());
+
+            existingRent.get().setRentDate(entityManager.merge(rentDate));
+
+            entityManager.persist(existingRent.get());
+
+        } else {
+            throw new NoSuchElementException("No such item has been rented by " + username);
+        }
+
+    }
+
+    @Override
+    @Transactional
+    public void extendDeadline(Integer itemId, String username) {
+        Optional<Item> item = itemRepository.findById(itemId);
+        if (item.isEmpty()) {
+            throw new NoSuchElementException("No item found with id " + itemId);
+        } else if (item.get().getIsAvailable()) {
+            throw new IllegalStateException("Item is not rented by anyone!");
+        }
+
+        Optional<User> user = userRepository.findByUsername(username);
+
+        if (user.isEmpty()) {
+            throw new NoSuchElementException("No user found with name " + username);
+        }
+
+        Optional<Rent> existingRent = rentRepository.findNotReturnedByUserRent(username, itemId);
+
+        if (existingRent.isPresent()) {
+//            Item itemOfRent = existingRent.get().getItemRented();
+//            itemRepository.updateAvailability(true, itemOfRent.getId());
+//            existingRent.get().setItemRented(entityManager.merge(itemOfRent));
+
+            RentDate rentDate = existingRent.get().getRentDate();
+            rentDate.setDeadline(rentDate.getDeadline().plusWeeks(1));
+            existingRent.get().setRentDate(entityManager.merge(rentDate));
+            existingRent.get().setNumOfExtensions(existingRent.get().getNumOfExtensions() + 1);
+
+            entityManager.persist(existingRent.get());
+
+        } else {
+            throw new NoSuchElementException("No such item has been rented by " + username);
+        }
     }
 }
