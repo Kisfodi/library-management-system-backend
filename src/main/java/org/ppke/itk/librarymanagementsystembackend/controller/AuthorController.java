@@ -33,6 +33,10 @@ public class AuthorController {
     private final AuthorRepository authorRepository;
 
     @Operation(summary = "Retrieve author given by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Get information of given author"),
+            @ApiResponse(responseCode = "404", description = "Author is not found based on Id"),
+    })
     @GetMapping(value = "/{id}")
     public AuthorDto getAuthorById(@PathVariable("id") Integer id) {
 
@@ -54,11 +58,11 @@ public class AuthorController {
 
     }
 
-    @GetMapping(value = "/{id}", produces = "image/png")
+    @GetMapping(value = "/{id}/image", produces = "image/png")
     @Operation(summary = "Return portrait of the author given by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Get portrait of given author"),
-            @ApiResponse(responseCode = "404", description = "Image path is not found")
+            @ApiResponse(responseCode = "404", description = "Image path is not found"),
     })
     public @ResponseBody byte[] getAuthorPortrait(@PathVariable("id") Integer id) throws IOException {
 
@@ -69,7 +73,6 @@ public class AuthorController {
             image_path = "/static/images/authors/" + author.get().getPortraitPath();
         } else {
             throw new NoSuchElementException("Author not found");
-
         }
 
         try {
