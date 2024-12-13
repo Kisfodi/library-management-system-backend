@@ -157,25 +157,30 @@ public class BookController {
 
     }
 
-    @GetMapping(value = "{id}", produces = "image/png")
+    @GetMapping(value = "{id}/image", produces = "image/png")
     public @ResponseBody byte[] getBookCover(@PathVariable("id") Integer id) throws IOException {
 
         var book = bookRepository.findById(id);
 
-        String image_path = "/static/images/common/no_image_placeholder.png";
+        String image_path;
         if (book.isPresent()) {
 
-            File image_file = new File(book.get().getCoverPath());
-
-            if (image_file.exists()) {
-                image_path = image_file.getPath();
-            }
-
+            image_path = "/static/images/books/" + book.get().getCoverPath();
+        } else {
+            throw new NoSuchElementException("Book with id " + id + " not found!");
         }
 
-        InputStream in = getClass().getResourceAsStream(image_path);
+        try {
 
-        return in.readAllBytes();
+            InputStream in = getClass()
+                    .getResourceAsStream(image_path);
+            return in.readAllBytes();
+        } catch (IOException e) {
+            image_path = "/static/images/common/no_image_placeholder.png";
+            InputStream in = getClass()
+                    .getResourceAsStream(image_path);
+            return in.readAllBytes();
+        }
 
     }
 

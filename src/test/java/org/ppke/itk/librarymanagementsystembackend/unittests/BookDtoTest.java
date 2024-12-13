@@ -40,7 +40,7 @@ public class BookDtoTest {
         assertEquals(dtoUnderTest.getId(), book.getId());
         assertEquals(dtoUnderTest.getTitle(), book.getTitle());
         assertEquals(dtoUnderTest.getAuthor().getName(), book.getAuthor().getName());
-        assertEquals(dtoUnderTest.getGenre(), book.getGenre());
+        assertEquals(dtoUnderTest.getGenre(), book.getGenre().getGenreName());
 //        assertEquals(1, Arrays.stream(Genre.values()).filter(genre -> genre.equals(dtoUnderTest.getGenre())).count());
         assertEquals(dtoUnderTest.getNumberOfPages(), book.getNumberOfPages());
         assertEquals(dtoUnderTest.getPublicationYear(), book.getPublicationYear());

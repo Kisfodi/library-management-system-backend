@@ -17,14 +17,14 @@ public class ItemDto {
     private String bookTitle;
 
     private Boolean isAvailable;
-    private Condition condition;
+    private String condition;
 
     public static ItemDto fromItem(Item item) {
         return new ItemDto(
                 item.getId(),
                 item.getBook().getTitle(),
                 item.getIsAvailable(),
-                item.getCondition());
+                item.getCondition().getCondition());
     }
 
 

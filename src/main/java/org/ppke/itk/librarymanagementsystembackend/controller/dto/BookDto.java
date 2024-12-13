@@ -15,7 +15,7 @@ public class BookDto {
     private Integer id;
     private String title;
     private AuthorDto author;
-    private Genre genre;
+    private String genre;
     private Integer numberOfPages;
     private Integer publicationYear;
 
@@ -24,7 +24,7 @@ public class BookDto {
                 book.getId(),
                 book.getTitle(),
                 AuthorDto.fromAuthor(book.getAuthor()),
-                book.getGenre(),
+                book.getGenre().getGenreName(),
                 book.getNumberOfPages(),
                 book.getPublicationYear()
         );

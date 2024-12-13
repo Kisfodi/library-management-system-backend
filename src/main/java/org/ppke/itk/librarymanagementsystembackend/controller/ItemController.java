@@ -70,8 +70,6 @@ public class ItemController {
                 Sort.by(Sort.Direction.DESC, "book.title", "id");
 
         Page<Item> items = itemRepository.findAll(specification, PageRequest.of(currentPageNumber, limit, sortParam));
-
-
         return items.stream().
                 map(ItemDto::fromItem).toList();
 

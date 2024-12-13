@@ -80,11 +80,6 @@ public class AuthorController {
                     .getResourceAsStream(image_path);
             return in.readAllBytes();
         }
-
-
     }
-
-    /*
-     */
 
 }

@@ -21,7 +21,7 @@ public class RentDto {
     private String userName;
     private RentDate rentDate;
     private Integer numberOfExtensions;
-    private Condition condition;
+    private String condition;
 //    private boolean isAvailable;
 
 
@@ -34,7 +34,7 @@ public class RentDto {
                 rent.getUserOfRent().getUsername(),
                 rent.getRentDate(),
                 rent.getNumOfExtensions(),
-                rent.getItemRented().getCondition()
+                rent.getItemRented().getCondition().getCondition()
 //                rent.getItemRented().getIsAvailable()
         );
     }

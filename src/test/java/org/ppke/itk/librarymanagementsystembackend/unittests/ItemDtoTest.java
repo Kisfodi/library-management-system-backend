@@ -44,7 +44,7 @@ public class ItemDtoTest {
         assertEquals(dtoUnderTest.getId(), item.getId());
         assertEquals(dtoUnderTest.getBookTitle(), item.getBook().getTitle());
         assertEquals(dtoUnderTest.getIsAvailable(), item.getIsAvailable());
-        assertEquals(dtoUnderTest.getCondition(), item.getCondition());
+        assertEquals(dtoUnderTest.getCondition(), item.getCondition().getCondition());
 
     }
 
