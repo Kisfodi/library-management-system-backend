@@ -27,8 +27,9 @@ public class ItemController {
 
     @Secured("ROLE_ADMIN")
     @GetMapping(value = "/{id}")
-    public ItemDto getItemById(@PathVariable("id") Integer id) {
-        return ItemDto.fromItem(itemRepository.findById(id).get());
+    public Item getItemById(@PathVariable("id") Integer id) {
+        return itemRepository.findById(id).orElseThrow();
+//        return ItemDto.fromItem(itemRepository.findById(id).get());
     }
 
     @Secured("ROLE_ADMIN")
@@ -66,12 +67,13 @@ public class ItemController {
         }
 
         var sortParam = sort.equalsIgnoreCase("asc") ?
-                Sort.by(Sort.Direction.ASC, "book.title", "id") :
-                Sort.by(Sort.Direction.DESC, "book.title", "id");
+                Sort.by(Sort.Direction.ASC, "id","book.title") :
+                Sort.by(Sort.Direction.DESC, "id", "book.title");
 
         Page<Item> items = itemRepository.findAll(specification, PageRequest.of(currentPageNumber, limit, sortParam));
         return items.stream().
                 map(ItemDto::fromItem).toList();
+
 
     }
 

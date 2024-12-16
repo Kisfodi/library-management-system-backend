@@ -55,8 +55,7 @@ public class RentController {
             specification = specification.and(RentRepository.isDeadlineExtended());
         }
 
-        return rentRepository.findAll(specification).stream().map(RentDto::fromRent)
-                .toList();
+        return rentRepository.findAll(specification).stream().map(RentDto::fromRent).toList();
 
     }
 
@@ -78,10 +77,10 @@ public class RentController {
     @Secured("ROLE_ADMIN")
     @PostMapping(value = "/{username}/{itemId}")
     public RentDto saveRent(@PathVariable("username") String username, @PathVariable("itemId") Integer itemId) {
+
+        log.info("Hello");
+
         Rent rent = customRentRepository.saveRent(itemId, username);
-
-        log.info(rent.toString());
-
         return RentDto.fromRent(rent);
 
     }
@@ -105,21 +104,19 @@ public class RentController {
 
     @Secured("ROLE_ADMIN")
     @PutMapping("extend/{username}/{itemId}")
-    public ResponseEntity<String> extendDeadline(
+    public void extendDeadline(
             @PathVariable("username") String username,
             @PathVariable("itemId") Integer itemId
     ) {
 
         try {
             customRentRepository.extendDeadline(itemId, username);
-            return ResponseEntity.ok("Deadline successfully extended");
+//            return ResponseEntity.ok("Deadline successfully extended");
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+
+//            return ResponseEntity.badRequest().body(e.getMessage());
         }
 
     }
-
-
-
 
 }

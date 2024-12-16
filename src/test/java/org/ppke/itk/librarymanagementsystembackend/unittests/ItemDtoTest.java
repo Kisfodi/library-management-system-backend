@@ -42,7 +42,7 @@ public class ItemDtoTest {
         ItemDto dtoUnderTest = ItemDto.fromItem(item);
 
         assertEquals(dtoUnderTest.getId(), item.getId());
-        assertEquals(dtoUnderTest.getBookTitle(), item.getBook().getTitle());
+        assertEquals(dtoUnderTest.getBook().getTitle(), item.getBook().getTitle());
         assertEquals(dtoUnderTest.getIsAvailable(), item.getIsAvailable());
         assertEquals(dtoUnderTest.getCondition(), item.getCondition().getCondition());
 

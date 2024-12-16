@@ -16,11 +16,6 @@ import java.util.Optional;
 
 public interface ItemRepository extends JpaRepository<Item, Integer>, JpaSpecificationExecutor<Item> {
 
-//    @Transactional
-//    @Modifying
-//    @Query("update Item i set i.isAvailable = ?1 where i.id = ?2")
-//    int updateIsAvailableById(Boolean isAvailable, Integer id);
-
     @Transactional
     @Modifying
     @Query("update Item i set i.isAvailable = ?1 where i.id = ?2")

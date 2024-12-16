@@ -19,19 +19,14 @@ public class Item {
     private Integer id;
 
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "book_id")
     private Book book;
 
     @Column(name = "is_available", nullable = false)
     private Boolean isAvailable;
 
-//    @Column(name = "is_rentable", nullable = false)
-//    private Boolean isRentable;
-
     @Column(name = "condition")
-//    @Enumerated(EnumType.STRING)
     private Condition condition;
-//    private String condition;
 
 }

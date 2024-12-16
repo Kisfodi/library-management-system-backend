@@ -15,9 +15,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.*;
 
 @Tag(name = "Book")
@@ -29,17 +30,8 @@ public class BookController {
 
     private final BookRepository bookRepository;
 
-
-
-
-//    TODO
-//    Összetett filter
     @GetMapping("/{id}")
     public BookDto getBookById(@PathVariable("id") Integer id) {
-
-//        Optional<Book> book = bookRepository.findById(id);
-
-//        log.info(String.valueOf(book.get().getGenre()));
 
         return BookDto.fromBook(bookRepository.findById(id).orElseThrow());
     }
@@ -67,8 +59,6 @@ public class BookController {
             ) {
 
         if (filterKeyword != null && filterValue != null && filterOperator != null) {
-
-
             Assert.state(filterKeyword.size() == filterValue.size(),
                     "These will be paired together");
             Assert.state(filterKeyword.size() == filterOperator.size() + 1,
@@ -157,7 +147,7 @@ public class BookController {
 
     }
 
-    @GetMapping(value = "{id}/image", produces = "image/png")
+    @GetMapping(value = "{id}/image", produces = {"image/png", "image/jpg"})
     public @ResponseBody byte[] getBookCover(@PathVariable("id") Integer id) throws IOException {
 
         var book = bookRepository.findById(id);
@@ -165,23 +155,26 @@ public class BookController {
         String image_path;
         if (book.isPresent()) {
 
-            image_path = "/static/images/books/" + book.get().getCoverPath();
+            image_path = book.get().getCoverPath();
         } else {
             throw new NoSuchElementException("Book with id " + id + " not found!");
         }
 
         try {
-
-            InputStream in = getClass()
-                    .getResourceAsStream(image_path);
-            return in.readAllBytes();
+            return loadImageFromUrl(image_path);
         } catch (IOException e) {
-            image_path = "/static/images/common/no_image_placeholder.png";
-            InputStream in = getClass()
-                    .getResourceAsStream(image_path);
-            return in.readAllBytes();
+            image_path = "https://support.heberjahiz.com/hc/article_attachments/21013076295570";
+            return loadImageFromUrl(image_path);
         }
 
+    }
+
+    private static byte[] loadImageFromUrl(String image_path) throws IOException {
+        try (InputStream in = new URI(image_path).toURL().openStream()) {
+            return in.readAllBytes();
+        } catch (URISyntaxException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
 }
